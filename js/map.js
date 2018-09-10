@@ -112,3 +112,38 @@ var renderCard = function (card, template, defenition) {
 
   return cardElement;
 };
+
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
+
+var fragment = document.createDocumentFragment();
+
+var addPinsToDOM = function (pins) {
+  var pinList = document.querySelector('.map__pins');
+  var pinTemplate = document.querySelector('#pin')
+      .content
+      .querySelector('.map__pin');
+
+  pins.forEach(function (item, i) {
+    fragment.appendChild(renderPin(pins[i], pinTemplate));
+  });
+
+  pinList.appendChild(fragment);
+};
+
+var addCardsToDOM = function (cards) {
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var cardTemplate = document.querySelector('#card')
+      .content
+      .querySelector('.map__card');
+
+  cards.forEach(function (item, i) {
+    fragment.appendChild(renderCard(cards[i], cardTemplate, defenitionOfTypes));
+  });
+
+  map.insertBefore(fragment, mapFiltersContainer);
+};
+
+var advertisments = renderAdvertFeatures(avatars, titles, types, time, features, photos);
+addPinsToDOM(advertisments);
+addCardsToDOM(advertisments);
