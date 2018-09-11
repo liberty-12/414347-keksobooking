@@ -41,9 +41,10 @@ var getMixedArray = function (arr) {
   var copyOfArray = arr.slice();
 
   for (var i = copyOfArray.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
     var temp = copyOfArray[i];
-    copyOfArray[i] = copyOfArray[Math.floor(Math.random() * (i + 1))];
-    copyOfArray[Math.floor(Math.random() * (i + 1))] = temp;
+    copyOfArray[i] = copyOfArray[j];
+    copyOfArray[j] = temp;
   }
 
   return copyOfArray;
@@ -51,11 +52,11 @@ var getMixedArray = function (arr) {
 
 var getAdvert = function (avatars, titles, types, times, features, photos) {
   var adverts = [];
+  var randomAvatars = getMixedArray(avatars);
+  var randomTitles = getMixedArray(titles);
   for (var i = 0; i < 8; i++) {
     var x = getRandomInteger(0, 1200);
     var y = getRandomInteger(130, 630);
-    var randomAvatars = getMixedArray(avatars);
-    var randomTitles = getMixedArray(titles);
     var advert = {
       'author': {
         'avatar': 'img/avatars/user0' + randomAvatars[i] + '.png'
