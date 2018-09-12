@@ -97,8 +97,13 @@ var renderPin = function (card, template) {
   return pinElement;
 };
 
-var renderCard = function (card, template) {
-  var cardElement = template.cloneNode(true);
+var renderCard = function (card) {
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var cardTemplate = document.querySelector('#card')
+      .content
+      .querySelector('.map__card');
+
+  var cardElement = cardTemplate.cloneNode(true);
 
   cardElement.querySelector('.popup__avatar').src = card.author.avatar;
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -112,9 +117,9 @@ var renderCard = function (card, template) {
   var fragment = document.createDocumentFragment();
   var featureParent = cardElement.querySelector('.popup__features');
 
-  card.offer.features.forEach(function (i) {
-    var element = cardElement.querySelector('.popup__feature--' + i);
-    element.textContent = defenitionOfFeatures[i];
+  card.offer.features.forEach(function (feature) {
+    var element = cardElement.querySelector('.popup__feature--' + feature);
+    element.textContent = defenitionOfFeatures[feature];
     fragment.appendChild(element);
   });
 
@@ -124,22 +129,21 @@ var renderCard = function (card, template) {
   var photoElement = cardElement.querySelector('.popup__photo');
   var photoParent = cardElement.querySelector('.popup__photos');
 
-  card.offer.photos.forEach(function (i) {
+  card.offer.photos.forEach(function (photo) {
     var photoTemplate = photoElement.cloneNode(true);
-    photoTemplate.src = i;
+    photoTemplate.src = photo;
     fragment.appendChild(photoTemplate);
   });
 
   photoParent.innerHTML = '';
   photoParent.appendChild(fragment);
 
-  return cardElement;
+  document.querySelector('.map').insertBefore(cardElement, mapFiltersContainer);
 };
 
-var map = document.querySelector('.map');
-
-var activateMap = function (element) {
-  element.classList.remove('map--faded');
+var activateMap = function () {
+  var map = document.querySelector('.map');
+  map.classList.remove('map--faded');
 };
 
 var addPinsToDOM = function (pins) {
@@ -157,14 +161,6 @@ var addPinsToDOM = function (pins) {
 };
 
 var advertisments = getAdvert(initialAvatars, initialTitles, initialTypes, initialTimes, initialFeatures, initialPhotos);
-activateMap(map);
+activateMap();
 addPinsToDOM(advertisments);
-
-var mapFiltersContainer = document.querySelector('.map__filters-container');
-var cardTemplate = document.querySelector('#card')
-    .content
-    .querySelector('.map__card');
-var fragment = document.createDocumentFragment();
-
-fragment.appendChild(renderCard(advertisments[1], cardTemplate));
-map.insertBefore(fragment, mapFiltersContainer);
+renderCard(advertisments[1]);
