@@ -141,11 +141,6 @@ var renderCard = function (card) {
   document.querySelector('.map').insertBefore(cardElement, mapFiltersContainer);
 };
 
-var activateMap = function () {
-  var map = document.querySelector('.map');
-  map.classList.remove('map--faded');
-};
-
 var addPinsToDOM = function (pins) {
   var pinList = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin')
@@ -161,6 +156,5 @@ var addPinsToDOM = function (pins) {
 };
 
 var advertisments = getAdvert(initialAvatars, initialTitles, initialTypes, initialTimes, initialFeatures, initialPhotos);
-activateMap();
 addPinsToDOM(advertisments);
 renderCard(advertisments[1]);
