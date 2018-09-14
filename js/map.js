@@ -1,5 +1,19 @@
 'use strict';
 
+var pin = document.querySelector('.map__pin--main');
+var map = document.querySelector('.map');
+var adForm = document.querySelector('.ad-form');
+var mapFilter = document.querySelector('.map__filters');
+var fieldsets = adForm.querySelectorAll('fieldset');
+
+map.classList.add('map--faded');
+adForm.classList.add('ad-form--disabled');
+mapFilter.classList.add('map__filters--disabled');
+fieldsets.forEach(function (fieldset) {
+  fieldset.disabled = 'true';
+});
+
+
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 
@@ -19,7 +33,6 @@ var defenitionOfTypes = {
   'house': 'Дом',
   'bungalo': 'Бунгало'
 };
-
 var defenitionOfFeatures = {
   'wifi': 'Wi-Fi',
   'dishwasher': 'Посудомоечная машина',
@@ -156,5 +169,5 @@ var addPinsToDOM = function (pins) {
 };
 
 var advertisments = getAdvert(initialAvatars, initialTitles, initialTypes, initialTimes, initialFeatures, initialPhotos);
-addPinsToDOM(advertisments);
-renderCard(advertisments[1]);
+// addPinsToDOM(advertisments);
+// renderCard(advertisments[1]);
