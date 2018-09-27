@@ -36,7 +36,7 @@ var mouseupPinHandler = function () {
 mainPin.addEventListener('mouseup', mouseupPinHandler);
 
 var targetSrc;
-var element;
+var elem;
 
 window.addEventListener('click', function (evt) {
   if (evt.target.tagName === 'BUTTON') {
@@ -45,14 +45,14 @@ window.addEventListener('click', function (evt) {
       targetSrc = target.querySelector('img').src.slice(106);
       advertisments.forEach(function (item) {
         if (targetSrc === item.author.avatar) {
-          element = renderCard(item);
-          map.insertBefore(element, mapFiltersContainer);
+          elem = renderCard(item);
+          map.insertBefore(elem, mapFiltersContainer);
         }
       });
     } else if (target.className === 'popup__close') {
       advertisments.forEach(function (item) {
         if (targetSrc === item.author.avatar) {
-          map.removeChild(element);
+          map.removeChild(elem);
         }
       });
     }
