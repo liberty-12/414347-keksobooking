@@ -7,6 +7,7 @@ var PIN_Y = 375;
 
 var mainPin = document.querySelector('.map__pin--main');
 var map = document.querySelector('.map');
+var mapFiltersContainer = document.querySelector('.map__filters-container');
 var adForm = document.querySelector('.ad-form');
 var mapFilter = document.querySelector('.map__filters');
 var fieldsets = adForm.querySelectorAll('fieldset');
@@ -34,14 +35,27 @@ var mouseupPinHandler = function () {
 
 mainPin.addEventListener('mouseup', mouseupPinHandler);
 
+var targetSrc;
+var element;
+
 window.addEventListener('click', function (evt) {
   if (evt.target.tagName === 'BUTTON') {
-    var target = evt.target.querySelector('img').src.slice(106);
-    advertisments.forEach(function (item) {
-      if (target === item.author.avatar) {
-        renderCard(item);
-      }
-    });
+    var target = evt.target;
+    if (target.querySelector('img')) {
+      targetSrc = target.querySelector('img').src.slice(106);
+      advertisments.forEach(function (item) {
+        if (targetSrc === item.author.avatar) {
+          element = renderCard(item);
+          map.insertBefore(element, mapFiltersContainer);
+        }
+      });
+    } else if (target.className === 'popup__close') {
+      advertisments.forEach(function (item) {
+        if (targetSrc === item.author.avatar) {
+          map.removeChild(element);
+        }
+      });
+    }
   }
 });
 
@@ -140,7 +154,7 @@ var renderPin = function (card, template) {
 };
 
 var renderCard = function (card) {
-  var mapFiltersContainer = document.querySelector('.map__filters-container');
+  // var mapFiltersContainer = document.querySelector('.map__filters-container'); ПЕРЕНЕСЛА НАВЕРХ
   var cardTemplate = document.querySelector('#card')
       .content
       .querySelector('.map__card');
@@ -180,7 +194,8 @@ var renderCard = function (card) {
   photoParent.innerHTML = '';
   photoParent.appendChild(fragment);
 
-  map.insertBefore(cardElement, mapFiltersContainer);
+  return cardElement;
+  // map.insertBefore(cardElement, mapFiltersContainer); ПЕРЕНЕСЛА В ФУНКЦИЮ НАЖАТИЯ НА ПИН
 };
 
 var addPinsToDOM = function (pins) {
