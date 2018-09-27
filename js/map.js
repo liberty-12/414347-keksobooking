@@ -6,14 +6,13 @@ var PIN_X = 570;
 var PIN_Y = 375;
 
 var mainPin = document.querySelector('.map__pin--main');
-var mapPins = document.querySelectorAll('.map__pin');
 var map = document.querySelector('.map');
 var adForm = document.querySelector('.ad-form');
 var mapFilter = document.querySelector('.map__filters');
 var fieldsets = adForm.querySelectorAll('fieldset');
 var addressInput = adForm.querySelector('#address');
 
-addressInput.textContent = (PIN_X + PIN_WIDTH / 2) + ', ' + (PIN_Y + PIN_HEIGHT / 2); // ?
+addressInput.textContent = (PIN_X + PIN_WIDTH / 2) + ', ' + (PIN_Y + PIN_HEIGHT / 2);
 
 map.classList.add('map--faded');
 adForm.classList.add('ad-form--disabled');
@@ -34,6 +33,18 @@ var mouseupPinHandler = function () {
 };
 
 mainPin.addEventListener('mouseup', mouseupPinHandler);
+
+window.addEventListener('click', function (evt) {
+  if (evt.target.tagName === 'BUTTON') {
+    var target = evt.target.querySelector('img').src.slice(106);
+    advertisments.forEach(function (item) {
+      if (target === item.author.avatar) {
+        renderCard(item);
+      }
+    });
+  }
+});
+
 
 var initialAvatars = ['1', '2', '3', '4', '5', '6', '7', '8'];
 var initialTitles = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец',
@@ -128,8 +139,13 @@ var renderPin = function (card, template) {
   return pinElement;
 };
 
-var renderCard = function (card, template) {
-  var cardElement = template.cloneNode(true);
+var renderCard = function (card) {
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var cardTemplate = document.querySelector('#card')
+      .content
+      .querySelector('.map__card');
+
+  var cardElement = cardTemplate.cloneNode(true);
 
   cardElement.querySelector('.popup__avatar').src = card.author.avatar;
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -164,7 +180,7 @@ var renderCard = function (card, template) {
   photoParent.innerHTML = '';
   photoParent.appendChild(fragment);
 
-  return cardElement;
+  map.insertBefore(cardElement, mapFiltersContainer);
 };
 
 var addPinsToDOM = function (pins) {
@@ -179,19 +195,6 @@ var addPinsToDOM = function (pins) {
   });
 
   pinList.appendChild(fragment);
-};
-
-var addCardsToDOM = function (cards) {
-  var mapFiltersContainer = document.querySelector('.map__filters-container');
-  var cardTemplate = document.querySelector('#card')
-      .content
-      .querySelector('.map__card');
-  var fragment = document.createDocumentFragment();
-
-  cards.forEach(function (item) {
-    fragment.appendChild(renderCard(item, cardTemplate));
-  });
-  map.insertBefore(fragment, mapFiltersContainer);
 };
 
 var advertisments = getAdvert(initialAvatars, initialTitles, initialTypes, initialTimes, initialFeatures, initialPhotos);
